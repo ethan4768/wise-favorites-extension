@@ -7,17 +7,18 @@ import Telegram from "~components/popup/telegram"
 import { Alert, AlertDescription, AlertTitle } from "~components/ui/alert"
 import { Button } from "~components/ui/button"
 import { Label } from "~components/ui/label"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~components/ui/select"
 import { Textarea } from "~components/ui/textarea"
 import { cn } from "~lib/utils"
 
 import "~style.css"
 
+import { Switch } from "~components/ui/switch"
+
 function IndexPopup() {
   const [url, setUrl] = useState("")
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
-  const [category, setCategory] = useState("post") // post | tool
+  const [arsp, setArsp] = useState(false) // automatically retrieve and summarize posts
   const [switches, setSwitches] = useState({})
   const [error, setError] = useState("")
 
@@ -48,24 +49,21 @@ function IndexPopup() {
           </div>
           <div className="flex flex-col gap-2 my-2">
             <Label htmlFor="description">description</Label>
-            <Textarea className="min-h-[78px]" id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              className="min-h-[78px]"
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           <div className="flex flex-col gap-2 my-2">
-            <Label>category</Label>
-            <Select defaultValue="post" onValueChange={setCategory}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="post">post</SelectItem>
-                  <SelectItem value="tool">tool</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Label htmlFor="arsp-mode">Auto Summarization</Label>
+            <Switch id="arsp-mode" checked={arsp} onCheckedChange={setArsp} />
           </div>
           <div className="flex my-2 gap-1 justify-end">
-            {switches["cloudflare-worker"] && <CloudflareWorker url={url} title={title} category={category} description={description} setError={setError} />}
+            {switches["cloudflare-worker"] && (
+              <CloudflareWorker url={url} title={title} arsp={arsp} description={description} setError={setError} />
+            )}
             {switches["telegram"] && <Telegram title={title} url={url} setError={setError} />}
             <CopyAsMarkdown title={title} url={url} />
           </div>

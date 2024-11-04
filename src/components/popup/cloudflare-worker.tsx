@@ -6,7 +6,7 @@ import { Button } from "~components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~components/ui/tooltip"
 
 export default function CloudflareWorker(props) {
-  const { url, title, description, category, setError } = props
+  const { url, title, description, arsp, setError } = props
   const [cloudflareWorkerSucceed, setCloudflareWorkerSucceed] = useState(false)
 
   async function addTagsAndShare() {
@@ -25,14 +25,16 @@ export default function CloudflareWorker(props) {
         {
           url: url,
           title: title,
-          category: category,
-          description: description
+          description: description,
+          options: {
+            arsp: arsp
+          }
         },
         {
           headers: { Authorization: `Bearer ${token}` }
         }
       )
-      .then((response) => {
+      .then(() => {
         setCloudflareWorkerSucceed(true)
         setTimeout(() => {
           setCloudflareWorkerSucceed(false)

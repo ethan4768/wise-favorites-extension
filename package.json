@@ -1,7 +1,7 @@
 {
   "name": "wise-favorites-extension",
   "displayName": "Wise Favorites Extension",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Copy url as markdown && share to anywhere",
   "author": "ethan4768",
   "scripts": {
