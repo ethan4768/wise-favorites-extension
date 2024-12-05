@@ -76,6 +76,7 @@ This extension is built utilizing the following open-source projects and librari
     - [shadcn/ui](https://ui.shadcn.com/) & [shadcn-ui-expansions](https://github.com/hsuanyi-chou/shadcn-ui-expansions):
       Provide the beautifully designed UI components to enhance user interaction.
     - [Tailwind CSS](https://tailwindcss.com/): Leveraged for rapid and efficient styling.
+    - [Obsidian Web Clipper](https://obsidian.md/clipper): This extension draws on Obsidian Web Clipper's UI.
 
 - **Content Parsing**:
     - [cheeriojs/cheerio](https://github.com/cheeriojs/cheerio): For parsing and manipulating HTML content.
