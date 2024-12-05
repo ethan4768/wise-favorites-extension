@@ -7,7 +7,7 @@ This is a free and open-source Google Chrome extension, designed to enhance your
 extracting, converting, and organizing content for smarter information management and sharing.
 
 <div align="center">
-  <img width="432" src="./docs/images/sidepanel.png" alt="Side Panel">
+  <img width="450" src="./docs/images/sidepanel.png" alt="Side Panel">
 </div>
 
 <details>
@@ -59,8 +59,7 @@ extracting, converting, and organizing content for smarter information managemen
 
 ### Manual Installation
 
-1. Download the extension's `.zip` file from *
-   *[latest available release](https://github.com/ethan4768/wise-favorites-extension/releases)**.
+1. Download the extension's `.zip` file from **[latest available release](https://github.com/ethan4768/wise-favorites-extension/releases)**.
 2. Unzip the file.
 3. Open `chrome://extensions/` in your browser.
 4. Enable "Developer mode" in the top right.
