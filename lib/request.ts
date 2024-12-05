@@ -27,7 +27,7 @@ export const sendToWiseFavoritesWorker = async (
       .post(channel.properties["Base Path"].value)
       .type("json")
       .set("Authorization", `Bearer ${bearToken}`)
-      .send({ ...properties, content: content, options: { arsp: false, share: { github: true, telegram: false } } })
+      .send({ ...properties, content: content, options: { arsp: false } })
 
     if (!res.ok) {
       return `Cannot send request to ${basePath}:\n ${res.body.msg}`
