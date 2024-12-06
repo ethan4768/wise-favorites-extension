@@ -1,6 +1,6 @@
 {
   "name": "wise-favorites-extension",
-  "description": "wise favorites extension",
+  "description": "Enhance your web experience by seamlessly extracting, converting, and organizing content for smarter information management and sharing.",
   "private": true,
   "version": "1.0.5",
   "type": "module",
@@ -12,7 +12,8 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "prepare": "husky"
   },
   "dependencies": {
     "@mozilla/readability": "^0.5.0",
@@ -53,6 +54,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@ianvs/prettier-plugin-sort-imports": "4.4.0",
     "@types/chrome": "^0.0.280",
     "@types/react": "^18.3.12",
@@ -62,6 +65,7 @@
     "@wxt-dev/auto-icons": "^1.0.2",
     "@wxt-dev/module-react": "^1.1.1",
     "autoprefixer": "^10.4.20",
+    "husky": "^9.1.7",
     "postcss": "^8.4.49",
     "prettier": "3.3.3",
     "superagent": "^10.1.1",
