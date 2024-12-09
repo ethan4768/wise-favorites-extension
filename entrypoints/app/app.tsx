@@ -14,6 +14,7 @@ import { useIsSidePanel } from "@/lib/hooks/use-sidepanel.tsx"
 import { getMetadataIcon } from "@/lib/icons.ts"
 import { addToPresetTags, getPresetTagList } from "@/lib/storage/tags.ts"
 import { sanitizeAlphaNumeric } from "@/lib/string-utils.ts"
+import { isBlankPage, isValidUrl } from "@/lib/tab-utils.ts"
 import { PageMetadata } from "@/lib/types.ts"
 import { ChevronDown, ChevronRight, FileJson, FileText, Link2, RotateCw, Settings } from "lucide-react"
 import React from "react"
@@ -29,6 +30,7 @@ function App() {
     tags: []
   })
   const [content, setContent] = React.useState("")
+  const [pageNotSupported, setPageNotSupported] = React.useState(false)
   const [shareErrorMessage, setShareErrorMessage] = React.useState("")
 
   const [presetTagList, setPresetTagList] = React.useState<string[]>([])
@@ -48,7 +50,9 @@ function App() {
   const extractPageData = async () => {
     browser.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const currentTab = tabs[0]
-      if (currentTab?.id) {
+      if (!currentTab.url || isBlankPage(currentTab.url) || !isValidUrl(currentTab.url)) {
+        setPageNotSupported(true)
+      } else if (currentTab?.id) {
         const res = await browser.tabs.sendMessage(currentTab.id, { action: "extractPageData" })
         setMetadata({ ...res.metadata, tags: [] })
         setContent(res.content)
@@ -63,6 +67,10 @@ function App() {
       setMetadata((prev) => ({ ...prev, tags: tags }))
       await addToPresetTags(presetTagList, tags)
     }
+  }
+
+  if (pageNotSupported) {
+    return <PageNotSupported />
   }
 
   return (
@@ -206,6 +214,14 @@ function App() {
           <Share metadata={metadata} content={content} showErrorMessage={(msg) => setShareErrorMessage(msg)} />
         </TooltipProvider>
       </div>
+    </div>
+  )
+}
+
+function PageNotSupported() {
+  return (
+    <div className="h-dvh flex justify-center ">
+      <p className="mx-auto pt-44">This page is not supported.</p>
     </div>
   )
 }

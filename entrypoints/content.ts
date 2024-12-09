@@ -1,7 +1,7 @@
 import { extractPageData } from "@/lib/content-extractor.ts"
 
 export default defineContentScript({
-  matches: ["<all_urls>"],
+  matches: ["http://*/*", "https://*/*"],
   async main(ctx) {
     if (ctx.isInvalid) {
       return
