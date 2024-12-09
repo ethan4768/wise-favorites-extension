@@ -8,7 +8,7 @@ import {
 import { sendRequest } from "@/lib/request.ts"
 import { getEnabledShareChannels, ShareChannel } from "@/lib/storage/share-channels.ts"
 import { PageMetadata } from "@/lib/types.ts"
-import { CheckIcon, Send } from "lucide-react"
+import { CheckIcon, Loader2, Send } from "lucide-react"
 import React from "react"
 
 export default function Share({
@@ -22,6 +22,7 @@ export default function Share({
 }) {
   const [shareChannels, setShareChannels] = React.useState<ShareChannel[]>([])
   const [hasShared, setHasShared] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
   React.useEffect(() => {
     setTimeout(() => {
       setHasShared(false)
@@ -37,25 +38,33 @@ export default function Share({
 
   const share = async (channel: ShareChannel) => {
     showErrorMessage("")
+    setIsLoading(true)
     const msg = await sendRequest(channel, metadata, content)
     if (msg) {
       console.error(msg)
       showErrorMessage(msg)
+      setIsLoading(false)
       return
     }
+    setIsLoading(false)
     setHasShared(true)
   }
+
+  const sendIcon = isLoading ? <Loader2 className="animate-spin" /> : hasShared ? <CheckIcon /> : <Send />
 
   return (
     <>
       {shareChannels.length === 0 ? (
         <></>
       ) : shareChannels.length == 1 ? (
-        <Button onClick={() => share(shareChannels[0])}>{hasShared ? <CheckIcon /> : <Send />}Share</Button>
+        <Button disabled={isLoading} onClick={() => share(shareChannels[0])}>{sendIcon}Share</Button>
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button>{hasShared ? <CheckIcon /> : <Send />}Share</Button>
+            <Button disabled={isLoading}>
+              {sendIcon}
+              Share
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {shareChannels.map((channel) => (
