@@ -48,6 +48,7 @@ function App() {
   }
 
   const extractPageData = async () => {
+    setPageNotSupported(false)
     browser.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
       const currentTab = tabs[0]
       if (!currentTab.url || isBlankPage(currentTab.url) || !isValidUrl(currentTab.url)) {
@@ -70,39 +71,12 @@ function App() {
   }
 
   if (pageNotSupported) {
-    return <PageNotSupported />
+    return <PageNotSupported isSidePanel={isSidePanel} extractPageData={extractPageData} />
   }
 
   return (
     <div className="h-dvh flex flex-col p-0 font-sans bg-white">
-      <div className="flex-none flex items-center justify-end p-2">
-        {isSidePanel && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={extractPageData}>
-                <RotateCw />
-                <span className="sr-only">Refresh</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Refresh</TooltipContent>
-          </Tooltip>
-        )}
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => {
-                browser.runtime.openOptionsPage()
-              }}>
-              <Settings className="h-4 w-4" />
-              <span className="sr-only">Settings</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Settings</TooltipContent>
-        </Tooltip>
-      </div>
+      <Header isSidePanel={isSidePanel} extractPageData={extractPageData} />
       <div className="flex-none px-1">
         <Collapsible open={isMetadataExpanded} onOpenChange={setIsMetadataExpanded}>
           <CollapsibleTrigger asChild>
@@ -218,10 +192,46 @@ function App() {
   )
 }
 
-function PageNotSupported() {
+function PageNotSupported({ isSidePanel, extractPageData }: { isSidePanel: boolean; extractPageData: () => void }) {
   return (
-    <div className="h-dvh flex justify-center ">
-      <p className="mx-auto pt-44">This page is not supported.</p>
+    <div className="h-dvh flex flex-col p-0 font-sans bg-white">
+      <Header isSidePanel={isSidePanel} extractPageData={extractPageData} />
+      <div className="h-dvh flex justify-center ">
+        <p className="mx-auto pt-44">This page is not supported.</p>
+      </div>
+    </div>
+  )
+}
+
+function Header({ isSidePanel, extractPageData }: { isSidePanel: boolean; extractPageData: () => void }) {
+  return (
+    <div className="flex-none flex items-center justify-end p-2">
+      {isSidePanel && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon" onClick={extractPageData}>
+              <RotateCw />
+              <span className="sr-only">Refresh</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Refresh</TooltipContent>
+        </Tooltip>
+      )}
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              browser.runtime.openOptionsPage()
+            }}>
+            <Settings className="h-4 w-4" />
+            <span className="sr-only">Settings</span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>Settings</TooltipContent>
+      </Tooltip>
     </div>
   )
 }
