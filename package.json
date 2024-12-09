@@ -1,8 +1,8 @@
 {
   "name": "wise-favorites-extension",
-  "description": "Enhance your web experience by seamlessly extracting, converting, and organizing content for smarter information management and sharing.",
+  "description": "Effortlessly extract metadata, convert content to Markdown, customize with CSS selectors, share, and tag intelligently with AI.",
   "private": true,
-  "version": "1.0.6",
+  "version": "1.0.7",
   "type": "module",
   "scripts": {
     "dev": "wxt",

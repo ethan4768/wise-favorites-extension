@@ -3,8 +3,7 @@
   <span>Wise Favorites Extension</span>
 </h1>
 
-This is a free and open-source Google Chrome extension, designed to enhance your web experience by seamlessly
-extracting, converting, and organizing content for smarter information management and sharing.
+Effortlessly extract metadata, convert content to Markdown, customize with CSS selectors, share, and tag intelligently with AI.
 
 <div align="center">
   <img width="450" src="./docs/images/sidepanel.png" alt="Side Panel">
