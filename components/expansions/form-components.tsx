@@ -34,8 +34,10 @@ export function BooleanEx({
   onValueChange: (key: string, value: boolean) => void
 }) {
   return (
-    <div className="space-x-2">
-      <Label htmlFor={item}>{label}</Label>
+    <div className="flex items-center justify-between">
+      <Label htmlFor={item} className="text-sm font-medium text-gray-500">
+        {label}
+      </Label>
       <Switch id={item} checked={defaultValue} onCheckedChange={(checked) => onValueChange(item, checked)} />
     </div>
   )

@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/expansions/button-group.tsx"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { SelectorSettingItems, selectorSettingsInStorage } from "@/lib/storage/selectors.ts"
 import { CheckIcon, CirclePlus, ListPlus, SaveAll, Trash2, TrashIcon } from "lucide-react"
 import * as React from "react"
-import {SelectorSettingItems, selectorSettingsInStorage} from "@/lib/storage/selectors.ts";
+import { useTranslation } from "react-i18next"
 
 interface SelectorItems {
   id: string
@@ -19,6 +20,7 @@ interface PageSelectorsSectionProps {
 }
 
 function PageSelectorsSection({ selectorItems, onDelete, onChange }: PageSelectorsSectionProps) {
+  const { t } = useTranslation()
   const addValue = () => {
     onChange(selectorItems.id, selectorItems.key, [...selectorItems.values, ""])
   }
@@ -43,7 +45,7 @@ function PageSelectorsSection({ selectorItems, onDelete, onChange }: PageSelecto
           onClick={() => onDelete(selectorItems.id)}
           className="h-8 text-muted-foreground hover:text-foreground">
           <TrashIcon className="h-4 w-4" />
-          <span className="sr-only">Delete selectors</span>
+          <span className="sr-only">{t("settings.selector.deleteSelectors")}</span>
         </Button>
       </div>
       <div className="flex-1 flex gap-2">
@@ -74,7 +76,7 @@ function PageSelectorsSection({ selectorItems, onDelete, onChange }: PageSelecto
                   onClick={() => removeValue(index)}
                   className="h-8 text-muted-foreground hover:text-foreground ">
                   <Trash2 className="h-4 w-4" />
-                  <span className="sr-only">Remove selector</span>
+                  <span className="sr-only">{t("settings.selector.removeSelector")}</span>
                 </Button>
                 <Button
                   variant="outline"
@@ -82,7 +84,7 @@ function PageSelectorsSection({ selectorItems, onDelete, onChange }: PageSelecto
                   onClick={addValue}
                   className="h-8 text-muted-foreground hover:text-foreground">
                   <CirclePlus className="h-4 w-4" />
-                  <span className="sr-only">Add selector</span>
+                  <span className="sr-only">{t("settings.selector.addSelector")}</span>
                 </Button>
               </ButtonGroup>
             </div>
@@ -94,6 +96,7 @@ function PageSelectorsSection({ selectorItems, onDelete, onChange }: PageSelecto
 }
 
 export default function SelectorSettings() {
+  const { t } = useTranslation()
   const [hasSaved, setHasSaved] = React.useState(false)
   const [selectorItems, setSelectorItems] = React.useState<SelectorItems[]>([])
   React.useEffect(() => {
@@ -119,14 +122,14 @@ export default function SelectorSettings() {
 
   const validateItem = (item: SelectorItems): string | undefined => {
     if (!item.key.trim()) {
-      return "Hostname cannot be empty"
+      return t("settings.selector.hostnameCannotBeEmpty")
     }
     const values = item.values
     if (!values || values.length === 0) {
-      return "Selectors cannot be empty"
+      return t("settings.selector.selectorsCannotBeEmpty")
     }
     if (values.some((v) => !v.trim())) {
-      return "Selector cannot be empty"
+      return t("settings.selector.selectorCannotBeEmpty")
     }
     return undefined
   }
@@ -177,13 +180,11 @@ export default function SelectorSettings() {
   return (
     <div className="w-full mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold my-4">Selectors</h1>
-        <p className="text-sm text-gray-800">
-          - Use selectors to choose the desired elements from the web page. <br />
-          - Multiple selectors can be applied to a single web page.
+        <h1 className="text-2xl font-semibold my-4">{t("settings.selector.title")}</h1>
+        <p className="text-sm text-gray-800 whitespace-break-spaces">
+          {t("settings.selector.tips")}
           <br />
-          - The selected content will be automatically merged and converted into Markdown format.
-          <br />- Supported selectors:{" "}
+          {t("settings.selector.supportedSelectors")}
           <a
             target="_blank"
             href="https://github.com/fb55/css-select/blob/master/README.md#supported-selectors"
@@ -200,14 +201,14 @@ export default function SelectorSettings() {
           onChange={updatePageSelector}
         />
       ))}
-      <div className="flex gap-1  mt-4 text-sm text-muted-foreground">
+      <div className="flex gap-1 mt-4 text-sm text-muted-foreground">
         <Button variant="default" onClick={addPageSelector} className="justify-items-end">
           <ListPlus />
-          Add selector
+          {t("settings.selector.addSelector")}
         </Button>
         <Button variant="default" onClick={savePageSelectors}>
           {hasSaved ? <CheckIcon /> : <SaveAll />}
-          Save
+          {t("settings.selector.save")}
         </Button>
       </div>
     </div>

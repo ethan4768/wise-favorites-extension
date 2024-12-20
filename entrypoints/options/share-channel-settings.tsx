@@ -7,8 +7,10 @@ import { Switch } from "@/components/ui/switch"
 import { resetShareChannels, ShareChannel, shareSettingsInStorage } from "@/lib/storage/share-channels.ts"
 import { CheckIcon, CircleAlert, SaveAll } from "lucide-react"
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 export default function ShareChannelSettings() {
+  const { t } = useTranslation()
   const [shareSettingItems, setShareSettingItems] = React.useState<ShareChannel[]>([])
   const [selectedItem, setSelectedItem] = React.useState<ShareChannel | null>(null)
   const [hasSaved, setHasSaved] = React.useState(false)
@@ -89,18 +91,15 @@ export default function ShareChannelSettings() {
   return (
     <div className="w-full mx-auto">
       <div className="mb-8 space-y-2">
-        <h1 className="text-2xl font-semibold my-4">Share Channels</h1>
-        <p className="text-sm text-gray-800">
-          - Send request to enabled channels. <br />- More templates or custom your own channel.{" "}
-          <strong>coming soon</strong> <br />
-        </p>
+        <h1 className="text-2xl font-semibold my-4">{t("settings.share.title")}</h1>
+        <p className="text-sm text-gray-800">{t("settings.share.tips")}</p>
         <Button
           size="sm"
           variant="outline"
           className="border-red-500 text-red-500 bg-transparent transition-colors duration-300 hover:bg-red-500 hover:text-white"
           onClick={resetSettings}>
           {hasBeanRest ? <CheckIcon /> : <CircleAlert />}
-          Reset Settings
+          {t("settings.share.resetSettings")}
         </Button>
       </div>
       <div className="flex h-full">
@@ -130,7 +129,9 @@ export default function ShareChannelSettings() {
         <div className="w-2/3 pl-4 pr-2">
           {selectedItem && (
             <div>
-              <h2 className="text-lg font-bold">{selectedItem.title} Configuration</h2>
+              <h2 className="text-lg font-bold">
+                {selectedItem.title} {t("settings.share.configuration")}
+              </h2>
               <p className="text-sm pt-2">{selectedItem.description}</p>
               <Separator className="my-5" />
               <div className="space-y-4">
@@ -154,7 +155,8 @@ export default function ShareChannelSettings() {
                   </div>
                 ))}
                 <Button variant="default" onClick={handleSelectedItemSettingsSave}>
-                  {hasSaved ? <CheckIcon /> : <SaveAll />}Save
+                  {hasSaved ? <CheckIcon /> : <SaveAll />}
+                  {t("settings.share.save")}
                 </Button>
               </div>
             </div>

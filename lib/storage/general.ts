@@ -1,6 +1,8 @@
 import { storage } from "wxt/storage"
 
 export interface GeneralConfig {
+  language: string
+  llmLanguage: string
   llm: LLMConfig
 }
 
@@ -10,19 +12,9 @@ export interface LLMConfig {
   mergeTags: boolean
 }
 
-interface GeneralConfigDescSpec {
-  [key: string]: Record<string, string>
-}
-
-export const GeneralConfigDesc: GeneralConfigDescSpec = {
-  llm: {
-    overwriteTitle: "Overwrite title with AI result",
-    overwriteDescription: "Overwrite description with AI result",
-    mergeTags: "Merge tags with AI result"
-  }
-}
-
 export const defaultGeneralConfig: GeneralConfig = {
+  language: "system",
+  llmLanguage: "system",
   llm: {
     overwriteTitle: true,
     overwriteDescription: true,

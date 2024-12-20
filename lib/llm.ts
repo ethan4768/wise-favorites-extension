@@ -1,16 +1,26 @@
+import { resolveLanguage, supportedLanguageMapping } from "@/lib/language.ts"
+import { generalConfigInStorage } from "@/lib/storage/general.ts"
 import { openAIConfigInStorage } from "@/lib/storage/llm.ts"
 import { sanitizeAlphaNumeric } from "@/lib/string-utils.ts"
 import { LLMResponse, LLMResult, PageMetadata } from "@/lib/types.ts"
 import OpenAI from "openai"
 
-export async function tagging(presetTags: string[], metadata: PageMetadata, content: string): Promise<LLMResult> {
+export async function enhanceWithOpenAI(
+  presetTags: string[],
+  metadata: PageMetadata,
+  content: string
+): Promise<LLMResult> {
   const openAIConfig = await openAIConfigInStorage.getValue()
+  const generalConfig = await generalConfigInStorage.getValue()
   if (!openAIConfig || !openAIConfig.basePath || !openAIConfig.basePath || !openAIConfig.model) {
     return {
       success: false,
       error: "OpenAI Configuration Error, please check your settings."
     }
   }
+
+  let language = resolveLanguage(generalConfig.llmLanguage)
+  const languageMapped = supportedLanguageMapping[language]
 
   const openai = new OpenAI({
     baseURL: openAIConfig.basePath,
@@ -22,13 +32,15 @@ export async function tagging(presetTags: string[], metadata: PageMetadata, cont
 generate tags, an improved title, an improved description based on given URL, title, description and content
 
 tags: Select 2-5 of the most relevant tags from the following preset list: ${presetTags}, and feel free to add more if needed, every tag should not have any hyphens
-improved_title: retain proper nouns such as prompt, AI, LLM, should be no longer than 60 words
-improved_description: retain proper nouns such as prompt, AI, LLM, should be no longer than 160 words
+slug: url friendly
+improved_title: retain proper nouns such as prompt, AI, LLM, should be no longer than 60 words, respond in ${languageMapped}
+improved_description: retain proper nouns such as prompt, AI, LLM, should be no longer than 160 words, respond in ${languageMapped}
 
 Respond directly in JSON format, without using Markdown code blocks or any other formatting, the JSON schema should include tags, improved_title, improved_description
 Example:
 {
   "tags": ["AI", "dev", "tool", "writing"],
+  "slug": "effective-prompt-engineering",
   "improved_title": "Microsoft open sources OmniParser: a tool for parsing and identifying interactive icons on the screen",
   "improved_description": "Microsoft has open-sourced a tool that can parse and recognize interactive icons on the screen: OmniParser. It can accurately identify interactive icons in the user interface and is superior to GPT-4V in parsing."
 }

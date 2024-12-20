@@ -10,6 +10,7 @@ import { getEnabledShareChannels, ShareChannel } from "@/lib/storage/share-chann
 import { PageMetadata } from "@/lib/types.ts"
 import { CheckIcon, Loader2, Send } from "lucide-react"
 import React from "react"
+import { useTranslation } from "react-i18next"
 
 export default function Share({
   metadata,
@@ -20,6 +21,7 @@ export default function Share({
   content: string
   showErrorMessage: (msg: string) => void
 }) {
+  const { t } = useTranslation()
   const [shareChannels, setShareChannels] = React.useState<ShareChannel[]>([])
   const [hasShared, setHasShared] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
@@ -57,13 +59,16 @@ export default function Share({
       {shareChannels.length === 0 ? (
         <></>
       ) : shareChannels.length == 1 ? (
-        <Button disabled={isLoading} onClick={() => share(shareChannels[0])}>{sendIcon}Share</Button>
+        <Button disabled={isLoading} onClick={() => share(shareChannels[0])}>
+          {sendIcon}
+          {t("app.share")}
+        </Button>
       ) : (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button disabled={isLoading}>
               {sendIcon}
-              Share
+              {t("app.share")}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
