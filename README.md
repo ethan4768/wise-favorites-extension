@@ -56,6 +56,10 @@ Effortlessly extract metadata, convert content to Markdown, customize with CSS s
 
 ## Installation
 
+### Chrome Web Store
+1. Visit the [Chrome Web Store](https://chromewebstore.google.com/detail/wise-favorites-extension/ngjobmgkopijgekhpfjfiicamlbeambk).
+2. Click "Add to Chrome."
+
 ### Manual Installation
 
 1. Download the extension's `.zip` file from **[latest available release](https://github.com/ethan4768/wise-favorites-extension/releases)**.
