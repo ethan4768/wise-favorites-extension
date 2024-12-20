@@ -3,11 +3,14 @@ import { detectLanguage, fallbackLanguage, supportedLanguages } from "@/lib/lang
 import i18next from "i18next"
 import { initReactI18next } from "react-i18next"
 
-const userLanguage = await detectLanguage()
+async function initializeI18n() {
+  const userLanguage = await detectLanguage()
+  await i18next.use(initReactI18next).init({
+    lng: userLanguage,
+    supportedLngs: supportedLanguages,
+    fallbackLng: fallbackLanguage,
+    resources
+  })
+}
 
-i18next.use(initReactI18next).init({
-  lng: userLanguage,
-  supportedLngs: supportedLanguages,
-  fallbackLng: fallbackLanguage,
-  resources
-})
+initializeI18n()
