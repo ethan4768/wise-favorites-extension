@@ -18,8 +18,11 @@ import { isBlankPage, isValidUrl } from "@/lib/tab-utils.ts"
 import { PageMetadata } from "@/lib/types.ts"
 import { ChevronDown, ChevronRight, FileJson, FileText, Link2, RotateCw, Settings } from "lucide-react"
 import React from "react"
+import "@/lib/i18n/i18n.ts"
+import { useTranslation } from "react-i18next"
 
 function App() {
+  const { t } = useTranslation()
   const isSidePanel = useIsSidePanel()
   const isMobile = useIsMobile()
 
@@ -84,7 +87,7 @@ function App() {
               variant="ghost"
               size="default"
               className="px-2 py-3 h-6 font-medium hover:bg-transparent hover:shadow-none focus:shadow-none active:shadow-none">
-              Metadata
+              {t("app.metadata")}
               {isMetadataExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
             </Button>
           </CollapsibleTrigger>
@@ -113,7 +116,7 @@ function App() {
                           value={value?.map((v: string) => {
                             return { label: v, value: v } as Option
                           })}
-                          placeholder="Select or create tags..."
+                          placeholder={t("app.selectOrCreateTags")}
                           creatable
                           hideClearAllButton
                           onChange={(options) =>
@@ -124,7 +127,9 @@ function App() {
                                 .filter((x: string) => x !== "")
                             )
                           }
-                          emptyIndicator={<p className="text-center text-xs text-slate-700">Select or create tags</p>}
+                          emptyIndicator={
+                            <p className="text-center text-xs text-slate-700">{t("app.selectOrCreateTags")}</p>
+                          }
                         />
                       ) : (
                         <Input
@@ -152,7 +157,7 @@ function App() {
 
       <div className="flex-1 flex flex-col grow my-2">
         <div className="px-3 py-2 flex-none">
-          <span className="font-medium text-sm">Content</span>
+          <span className="font-medium text-sm">{t("app.content")}</span>
         </div>
         <Textarea
           value={content}
@@ -169,19 +174,19 @@ function App() {
             <CopyButton
               value={JSON.stringify(metadata || {})}
               icon={<FileJson />}
-              tooltip="Copy Metadata"
+              tooltip={t("app.copyMetadata")}
               hideText={isMobile || !isSidePanel}
             />
             <CopyButton
               value={content}
               icon={<FileText />}
-              tooltip="Copy Content"
+              tooltip={t("app.copyContent")}
               hideText={isMobile || !isSidePanel}
             />
             <CopyButton
               value={`[${metadata.title || ""}](${metadata.url || ""})`}
               icon={<Link2 />}
-              tooltip="Copy Title and URL"
+              tooltip={t("app.copyTitleAndUrl")}
               hideText={isMobile || !isSidePanel}
             />
           </ButtonGroup>
@@ -193,17 +198,19 @@ function App() {
 }
 
 function PageNotSupported({ isSidePanel, extractPageData }: { isSidePanel: boolean; extractPageData: () => void }) {
+  const { t } = useTranslation()
   return (
     <div className="h-dvh flex flex-col p-0 font-sans bg-white">
       <Header isSidePanel={isSidePanel} extractPageData={extractPageData} />
       <div className="h-dvh flex justify-center ">
-        <p className="mx-auto pt-44">This page is not supported.</p>
+        <p className="mx-auto pt-44">{t("app.PageNotSupported")}</p>
       </div>
     </div>
   )
 }
 
 function Header({ isSidePanel, extractPageData }: { isSidePanel: boolean; extractPageData: () => void }) {
+  const { t } = useTranslation()
   return (
     <div className="flex-none flex items-center justify-end p-2">
       {isSidePanel && (
@@ -211,10 +218,10 @@ function Header({ isSidePanel, extractPageData }: { isSidePanel: boolean; extrac
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon" onClick={extractPageData}>
               <RotateCw />
-              <span className="sr-only">Refresh</span>
+              <span className="sr-only">{t("app.refresh")}</span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Refresh</TooltipContent>
+          <TooltipContent>{t("app.refresh")}</TooltipContent>
         </Tooltip>
       )}
 
@@ -227,10 +234,10 @@ function Header({ isSidePanel, extractPageData }: { isSidePanel: boolean; extrac
               browser.runtime.openOptionsPage()
             }}>
             <Settings className="h-4 w-4" />
-            <span className="sr-only">Settings</span>
+            <span className="sr-only">{t("app.settings")}</span>
           </Button>
         </TooltipTrigger>
-        <TooltipContent>Settings</TooltipContent>
+        <TooltipContent>{t("app.settings")}</TooltipContent>
       </Tooltip>
     </div>
   )

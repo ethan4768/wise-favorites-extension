@@ -4,9 +4,11 @@ import { Label } from "@/components/ui/label.tsx"
 import { getPresetTagList, setPresetTagsFromString } from "@/lib/storage/tags.ts"
 import { CheckIcon, SaveAll } from "lucide-react"
 import * as React from "react"
+import { useTranslation } from "react-i18next"
 import { Link } from "wouter"
 
 export default function TagSettings() {
+  const { t } = useTranslation()
   const [presetTags, setPresetTags] = React.useState<string>("")
   const [hasSaved, setHasSaved] = React.useState(false)
   React.useEffect(() => {
@@ -34,13 +36,12 @@ export default function TagSettings() {
   return (
     <div className="w-full mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold my-4">Tags Configuration</h1>
+        <h1 className="text-2xl font-semibold my-4">{t("settings.tags.title")}</h1>
         <div className="text-sm text-gray-800">
-          <p>- Shown in metadata</p>
-          <p>
-            - You can use LLM to generate tags automatically, go to{" "}
+          <p className="whitespace-break-spaces">
+            {t("settings.tags.tips")}{" "}
             <Link to="/llm" className="underline text-blue-700">
-              LLM Settings
+              {t("settings.tags.llmSettings")}
             </Link>
           </p>
         </div>
@@ -48,11 +49,10 @@ export default function TagSettings() {
 
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="preset-tags">Preset Tags</Label>
-          <div>
-            <p> - one tag per line</p>
-            <p> - will keep only letters and numbers</p>
-          </div>
+          <Label htmlFor="preset-tags" className="text-base font-medium">
+            {t("settings.tags.presetTags")}
+          </Label>
+          <p className="whitespace-break-spaces text-sm">{t("settings.tags.presetTags.tips")}</p>
           <div className="flex space-x-2">
             <AutosizeTextarea
               id="preset-tags"
@@ -67,7 +67,7 @@ export default function TagSettings() {
         <div>
           <Button variant="default" onClick={saveConfig}>
             {hasSaved ? <CheckIcon /> : <SaveAll />}
-            Save
+            {t("settings.tags.save")}
           </Button>
         </div>
       </div>

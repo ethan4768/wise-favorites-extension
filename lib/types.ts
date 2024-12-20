@@ -8,10 +8,12 @@ export interface PageMetadata {
   description?: string
   image?: string
   tags?: string[]
+  slug?: string
 }
 
 export const LLMResponseSchema = z.object({
   tags: z.array(z.string()),
+  slug: z.string(),
   improved_title: z.string(),
   improved_description: z.string()
 })
