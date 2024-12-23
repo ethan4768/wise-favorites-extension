@@ -18,7 +18,6 @@ import { isBlankPage, isValidUrl } from "@/lib/tab-utils.ts"
 import { PageMetadata } from "@/lib/types.ts"
 import { ChevronDown, ChevronRight, FileJson, FileText, Link2, RotateCw, Settings } from "lucide-react"
 import React from "react"
-import "@/lib/i18n/i18n.ts"
 import { useTranslation } from "react-i18next"
 
 function App() {

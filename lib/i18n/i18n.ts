@@ -5,12 +5,18 @@ import { initReactI18next } from "react-i18next"
 
 async function initializeI18n() {
   const userLanguage = await detectLanguage()
+
   await i18next.use(initReactI18next).init({
     lng: userLanguage,
     supportedLngs: supportedLanguages,
     fallbackLng: fallbackLanguage,
-    resources
+    resources,
+    interpolation: {
+      escapeValue: false
+    }
   })
+
+  return i18next
 }
 
-initializeI18n()
+export default initializeI18n
