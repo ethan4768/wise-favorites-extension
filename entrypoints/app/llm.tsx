@@ -47,7 +47,9 @@ export default function LLM({
         onValueChange("description", llmResult.data.improved_description)
       }
       if (generalConfig?.llm.mergeTags) {
-        onValueChange("tags", [...(metadata.tags || []), ...(llmResult.data?.tags || [])])
+        const combinedTags = [...(metadata.tags || []), ...(llmResult.data?.tags || [])]
+        const uniqueTags = combinedTags.filter((tag, index) => combinedTags.indexOf(tag) === index)
+        onValueChange("tags", uniqueTags)
       }
       if (llmResult.data?.slug) {
         onValueChange("slug", llmResult.data?.slug)
